@@ -1,37 +1,21 @@
 # require 'httparty'
 require 'json'
+require 'aws-sdk-dynamodb'
 
 def lambda_handler(event:, context:)
-  # Sample pure Lambda function
+  http_method = 'GET'
 
-  # Parameters
-  # ----------
-  # event: Hash, required
-  #     API Gateway Lambda Proxy Input Format
-  #     Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
-
-  # context: object, required
-  #     Lambda Context runtime methods and attributes
-  #     Context doc: https://docs.aws.amazon.com/lambda/latest/dg/ruby-context.html
-
-  # Returns
-  # ------
-  # API Gateway Lambda Proxy Output Format: dict
-  #     'statusCode' and 'body' are required
-  #     # api-gateway-simple-proxy-for-lambda-output-format
-  #     Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
-
-  # begin
-  #   response = HTTParty.get('http://checkip.amazonaws.com/')
-  # rescue HTTParty::Error => error
-  #   puts error.inspect
-  #   raise error
-  # end
-
+  # dynamodb = Aws::DynamoDB::Resource.new(region: 'ap-northeast-1')
+  dynamo = Aws::DynamoDB::Client.new(
+  # app.rubyはDocker上で実行されるため、localhostを指定するとアクセスに失敗する。ifconfig等でホストマシンのグローバルIPを確認してIPを指定する。
+        endpoint: 'http://192.168.10.121:8000'
+  )
+  table_info = dynamo.describe_table({table_name: "test-table"}) 
   {
     statusCode: 200,
     body: {
       message: "Hello World!",
+      table_info: table_info.to_h
       # location: response.body
     }.to_json
   }
