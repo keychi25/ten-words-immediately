@@ -26,7 +26,7 @@ services:
       - ten-words-30s-network
 
 volumes:
-  dynamodb-local-dataio:
+  dynamodb-local-data:
 
 networks:
   ten-words-30s-network:
