@@ -7,8 +7,9 @@ def lambda_handler(event:, context:)
 
   # dynamodb = Aws::DynamoDB::Resource.new(region: 'ap-northeast-1')
   dynamo = Aws::DynamoDB::Client.new(
-  # app.rubyはDocker上で実行されるため、localhostを指定するとアクセスに失敗する。ifconfig等でホストマシンのグローバルIPを確認してIPを指定する。
-        endpoint: 'http://192.168.10.121:8000'
+    # app.rubyはDocker上で実行されるため、localhostを指定するとアクセスに失敗する。ifconfig等でホストマシンのグローバルIPを確認してIPを指定してもできる。
+    # 対策としてはdocker-composeでネットワークを「external」に設定する
+    endpoint: 'http://dynamodb-local:8000'
   )
   table_info = dynamo.describe_table({table_name: "test-table"}) 
   {
