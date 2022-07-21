@@ -30,4 +30,4 @@ volumes:
 
 networks:
   ten-words-30s-network:
-    driver: bridge
+    external: true
