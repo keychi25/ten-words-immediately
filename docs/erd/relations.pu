@@ -1,0 +1,8 @@
+@startuml erd
+' オブジェクトを定義したファイルをインクルード
+!include objects.pu
+
+users ||-l--|{ answers
+themes ||-r--|{ answers
+
+@enduml

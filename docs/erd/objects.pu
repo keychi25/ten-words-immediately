@@ -1,0 +1,44 @@
+@startuml Objects
+
+!define MAIN_ENTITY #E2EFDA-C6E0B4
+!define MAIN_ENTITY_2 #FCE4D6-F8CBAD
+
+!define METAL #F2F2F2-D9D9D9
+!define MASTER_MARK_COLOR AAFFAA
+!define TRANSACTION_MARK_COLOR FFAA00
+
+skinparam class {
+    BackgroundColor METAL
+    BorderColor Black
+    ArrowColor Black
+}
+
+entity users as "User\nユーザー" {
+  + id [PK]
+  --
+  login_id [ログインID]: string
+  password [パスワード]: string
+  display_name [表示名]: string
+  created_at [作成日]: datetime
+  updated_at [更新日]: datetime
+}
+
+entity themes as "Theme\nお題となるテーマ" {
+  + id [PK]
+  --
+  name [お題名]: string
+  created_at [作成日]: datetime
+  updated_at [更新日]: datetime
+}
+
+entity answers as "Answer\nお題に対して回答した内容" {
+  + id [PK]
+  --
+  user_id <<FK>>
+  theme_id <<FK>>
+  answers [お題名]: Array
+  created_at [作成日]: datetime
+  updated_at [更新日]: datetime
+}
+
+@enduml
