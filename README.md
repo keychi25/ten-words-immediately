@@ -48,3 +48,6 @@ $ yarn start
 ```
 
 # Note
+
+## SQS
+- [Amazon SQSをローカルで実行する](https://techgrowup.net/2021/08/17/amazon-sqs/)

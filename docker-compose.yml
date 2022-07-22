@@ -24,6 +24,16 @@ services:
       - dynamodb-local
     networks:
       - ten-words-30s-network
+  alpine-sqs:
+    image: roribio16/alpine-sqs:latest
+    container_name: alpine_sqs
+    ports:
+      - "9324:9324"
+      - "9325:9325"
+    stdin_open: true
+    tty: true
+    networks:
+      - ten-words-30s-network
 
 volumes:
   dynamodb-local-data:
