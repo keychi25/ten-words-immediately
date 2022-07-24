@@ -1,0 +1,105 @@
+openapi: 3.0.0
+
+info:
+  title: 10-words-immediately
+  description: 10-words-immediately
+  version: 0.0.1
+  termsOfService: "https://github.com/keychi25/ten-words-immediately"
+  contact:
+    email: "keychi81920f@google.com"
+  license:
+    name: "MIT License"
+    url: "https://github.com/keychi25/ten-words-immediately/blob/master/LICENSE"
+
+servers:
+  - url: http://dynamodb-local:8000
+    description: Local machine
+
+tags:
+  - name: test
+    description: テスト用
+
+paths:
+  /:
+    get:
+      tags:
+        - test
+      summary: XXX-0000 test
+      description: test
+      operationId: test #ここで設定したものがaspida側でのメソッド名になる
+      responses:
+        "200":
+          $ref: "#/components/responses/BadRequestResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "500":
+          $ref: "#/components/responses/UnkownResponse"
+
+components:
+  responses:
+    SuccessResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SuccessSchema"
+    UnkownResponse:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorSchema"
+    BadRequestResponse:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorSchema"
+  schemas:
+    SuccessSchema:
+      title: 成功時時のレスポンス
+      description: 成功時に返却されるレスポンスを返す。
+      type: object
+      required:
+        - ok
+      properties:
+        ok:
+          title: 成功かどうか
+          description: 成功かどうか
+          type: boolean
+          example: true
+    ErrorSchema:
+      title: エラー時のレスポンス
+      description: エラー時に返却されるレスポンスの配列を返す。
+      type: object
+      required:
+        - messages
+      properties:
+        messages:
+          title: エラーメッセージの配列
+          description: エラーメッセージの配列
+          type: array
+          items:
+            title: エラーの内容
+            description: エラーの内容
+            type: string
+            example: 不正なパラメータです
+    LoginFailedSchema:
+      title: ログイン失敗時のレスポンス
+      description: ログイン失敗時のレスポンスで合致するユーザが存在しないときには404を返す。
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          title: HTTPステータス
+          description: HTTPステータス
+          type: integer
+          format: int64
+          example: 404
+        massage:
+          title: メッセージ内容
+          description: メッセージ内容
+          type: string
+          example: Not Found
