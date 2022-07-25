@@ -2,7 +2,7 @@ version: '3'
 
 services:
   dynamodb-local:
-    container_name: test_dynamodb-local
+    container_name: dynamodb-local
     image: amazon/dynamodb-local:latest
     user: root
     command: -jar DynamoDBLocal.jar -sharedDb -dbPath /data
@@ -14,7 +14,7 @@ services:
       - ten-words-30s-network
 
   dynamodb-admin:
-    container_name: test_dynamodb-admin
+    container_name: dynamodb-admin
     image: aaronshaf/dynamodb-admin:latest
     environment:
       - DYNAMO_ENDPOINT=dynamodb-local:8000
