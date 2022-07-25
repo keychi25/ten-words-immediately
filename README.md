@@ -20,10 +20,11 @@
 $ docker network create ten-words-30s-network
 ```
 
-## DynamoDBの起動
+## DynamoDB + Amazon SQSの起動
 
 ```sh
-# localhost:8001で管理画面を起動
+# localhost:8001でDynamoDBの管理画面を起動
+# localhost:9324でSQSを実行
 $ docker-compose up --build
 ```
 
@@ -31,22 +32,38 @@ $ docker-compose up --build
 
 ```sh
 #　ビルドする
-$ sam build --use-container -t hello/template.yaml
+$ sam build --use-container -t apis/hello/template.yaml
 #　起動する（起動したコンテナ内からDynammoDBにアクセスするためにネットワークを指定している）
-$ sam local start-api -p 1111 --docker-network ten-words-30s-network -t hello/template.yaml
+$ sam local start-api -p 1111 --docker-network ten-words-30s-network -t apis/hello/template.yaml
 ```
 
 ## Reactの実行
 
 ```sh
 # ディレクトリの移動
-$ webs
+$ web
 # パッケージの依存関係解消
 $ yarn install
 # 起動
 $ yarn start
 ```
 
+## SQSの実行
+
+```sh
+# QueueURL一覧の取得（list-queue）
+$ aws sqs list-queues --endpoint-url http://localhost:9324
+# Queueの作成（create-queue）
+$ aws sqs create-queue --queue-name queue --endpoint-url http://localhost:9324
+# メッセージの作成（send-message）
+$ aws sqs send-message --queue-url http://localhost:9324/000000000000/queue --message-body "massage" --endpoint-url http://localhost:9324
+# メッセージの取得（receive-message）
+$ aws sqs receive-message --queue-url http://localhost:9324/000000000000/queue --endpoint-url http://localhost:9324
+# メッセージの削除（delete-massage）
+$ aws sqs delete-message --queue-url http://localhost:9324/000000000000/queue --receipt-handle [ReceiptHandle] --endpoint-url http://localhost:9324
+# キューの削除（delete-queue）
+$ aws sqs delete-queue --queue-url http://localhost:9324/000000000000/queue --endpoint-url http://localhost:9324
+```
 # Note
 
 ## SQS
